@@ -5,7 +5,11 @@ extern crate clap;
 use clap::{Arg, App};
 extern crate itertools;
 use itertools::Itertools;
+extern crate strum;
+use strum_macros::{EnumIter,EnumString};
 
+
+//#[derive(Debug, PartialEq, EnumString, EnumIter)]
 pub enum Rank {
     Two,
     Three,
