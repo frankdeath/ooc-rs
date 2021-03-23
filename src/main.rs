@@ -1,28 +1,40 @@
 use std::fmt;
-use std::str::FromStr;
 
 extern crate clap;
 use clap::{Arg, App};
 extern crate itertools;
 use itertools::Itertools;
-extern crate strum;
+extern crate strum_macros;
 use strum_macros::{EnumIter,EnumString};
 
 
-//#[derive(Debug, PartialEq, EnumString, EnumIter)]
+#[derive(Debug, PartialEq, EnumString, EnumIter)]
 pub enum Rank {
+    #[strum(serialize = "two", serialize = "2")]
     Two,
+    #[strum(serialize = "three", serialize = "3")]
     Three,
+    #[strum(serialize = "four", serialize = "4")]
     Four,
+    #[strum(serialize = "five", serialize = "5")]
     Five,
+    #[strum(serialize = "six", serialize = "6")]
     Six,
+    #[strum(serialize = "seven", serialize = "7")]
     Seven,
+    #[strum(serialize = "eight", serialize = "8")]
     Eight,
+    #[strum(serialize = "nine", serialize = "9")]
     Nine,
+    #[strum(serialize = "ten", serialize = "T")]
     Ten,
+    #[strum(serialize = "jack", serialize = "J")]
     Jack,
+    #[strum(serialize = "queen", serialize = "Q")]
     Queen,
+    #[strum(serialize = "king", serialize = "K")]
     King,
+    #[strum(serialize = "ace", serialize = "A")]
     Ace,
 }
 
@@ -46,34 +58,15 @@ impl fmt::Display for Rank {
   }
 }
 
-impl FromStr for Rank {
-  
-  type Err = ();
-  
-  fn from_str(input: &str) -> Result<Rank, Self::Err> {
-    match input {
-      "2" => Ok(Rank::Two),
-      "3" => Ok(Rank::Three),
-      "4" => Ok(Rank::Four),
-      "5" => Ok(Rank::Five),
-      "6" => Ok(Rank::Six),
-      "7" => Ok(Rank::Seven),
-      "8" => Ok(Rank::Eight),
-      "9" => Ok(Rank::Nine),
-      "T" => Ok(Rank::Ten),
-      "J" => Ok(Rank::Jack),
-      "Q" => Ok(Rank::Queen),
-      "K" => Ok(Rank::King),
-      "A" => Ok(Rank::Ace),
-       _  => Err(()),
-    }
-  }
-}
-
+#[derive(Debug, EnumString)]
 pub enum Suit {
+    #[strum(serialize = "spade", serialize = "s")]
     Spade,
+    #[strum(serialize = "heart", serialize = "h")]
     Heart,
+    #[strum(serialize = "diamond", serialize = "d")]
     Diamond,
+    #[strum(serialize = "club", serialize = "c")]
     Club,
 }
 
@@ -88,21 +81,7 @@ impl fmt::Display for Suit {
   }
 }
 
-impl FromStr for Suit {
-  
-  type Err = ();
-  
-  fn from_str(input: &str) -> Result<Suit, Self::Err> {
-    match input {
-      "s" => Ok(Suit::Spade),
-      "h" => Ok(Suit::Heart),
-      "d" => Ok(Suit::Diamond),
-      "c" => Ok(Suit::Club),
-       _  => Err(()),
-    }
-  }
-}
-
+#[derive(Debug)]
 struct Card {
   rank: Rank,
   suit: Suit,
@@ -120,7 +99,6 @@ impl fmt::Display for Card {
   }
 }
 
-// implement from_string for Card
 
 fn main() {
     let matches = App::new("Omaha Odds Calculator (ooc-rs)")
@@ -145,5 +123,14 @@ fn main() {
                      .get_matches();
     let hole_card_str = matches.value_of("hole_cards").unwrap();
     println!("Hand: {}", hole_card_str);
+    for chunk in &hole_card_str.chars().chunks(2)
+    {
+        let mut card_str = String::from("");
+        for c in chunk {
+            //print!("{}\n", c);
+            card_str.push(c);
+        }
+        println!("{}", card_str);
+    }
 }
 
