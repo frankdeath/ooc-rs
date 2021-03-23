@@ -1,14 +1,15 @@
 use std::fmt;
+use std::str::FromStr;
 
 extern crate clap;
 use clap::{Arg, App};
 extern crate itertools;
 use itertools::Itertools;
 extern crate strum_macros;
-use strum_macros::{EnumIter,EnumString};
+use strum_macros::{EnumString};
 
 
-#[derive(Debug, PartialEq, EnumString, EnumIter)]
+#[derive(Debug, PartialEq, EnumString)]
 pub enum Rank {
     #[strum(serialize = "two", serialize = "2")]
     Two,
@@ -58,6 +59,7 @@ impl fmt::Display for Rank {
   }
 }
 
+
 #[derive(Debug, EnumString)]
 pub enum Suit {
     #[strum(serialize = "spade", serialize = "s")]
@@ -81,6 +83,7 @@ impl fmt::Display for Suit {
   }
 }
 
+
 #[derive(Debug)]
 struct Card {
   rank: Rank,
@@ -95,7 +98,7 @@ impl Card {
 
 impl fmt::Display for Card {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "<Card: {}{}", self.rank.to_string(), self.suit.to_string())
+    write!(f, "<Card: {}{}>", self.rank.to_string(), self.suit.to_string())
   }
 }
 
@@ -125,12 +128,13 @@ fn main() {
     println!("Hand: {}", hole_card_str);
     for chunk in &hole_card_str.chars().chunks(2)
     {
-        let mut card_str = String::from("");
-        for c in chunk {
-            //print!("{}\n", c);
-            card_str.push(c);
-        }
-        println!("{}", card_str);
+        let vec = chunk.collect::<Vec<char>>();
+        println!("{:?}", vec);
+        let r = Rank::from_str(&String::from(vec[0])).unwrap();
+        let s = Suit::from_str(&String::from(vec[1])).unwrap();
+        let card = Card::new(r, s);
+        println!("{:?}", card);
+        println!("{}", card.to_string());
     }
 }
 
