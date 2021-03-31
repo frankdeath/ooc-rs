@@ -103,6 +103,34 @@ impl fmt::Display for Card {
 }
 
 
+#[derive(Debug)]
+struct OmahaHand {
+  hole_cards: Vec<Card>,
+  board_cards: Vec<Card>,
+}
+
+
+fn string_to_cards(s: String) -> Vec<Card> {
+    let mut cards: Vec<Card> = Vec::new();
+    for chunk in &s.chars().chunks(2)
+    {
+        let vec = chunk.collect::<Vec<char>>();
+        /* ['A', 'd] */
+        //println!("{:?}", vec);
+        let r = Rank::from_str(&String::from(vec[0])).unwrap();
+        let s = Suit::from_str(&String::from(vec[1])).unwrap();
+        let card = Card::new(r, s);
+        /* Card { rank: Ace, suit: Diamond } */
+        //println!("{:?}", card);
+        /* <Card: Ad> */
+        //println!("{}", card.to_string());
+        cards.push(card);
+    }
+
+    cards
+}
+
+
 fn main() {
     let matches = App::new("Omaha Odds Calculator (ooc-rs)")
                      .version("0.1")
@@ -126,15 +154,7 @@ fn main() {
                      .get_matches();
     let hole_card_str = matches.value_of("hole_cards").unwrap();
     println!("Hand: {}", hole_card_str);
-    for chunk in &hole_card_str.chars().chunks(2)
-    {
-        let vec = chunk.collect::<Vec<char>>();
-        println!("{:?}", vec);
-        let r = Rank::from_str(&String::from(vec[0])).unwrap();
-        let s = Suit::from_str(&String::from(vec[1])).unwrap();
-        let card = Card::new(r, s);
-        println!("{:?}", card);
-        println!("{}", card.to_string());
-    }
+    let hole_cards = string_to_cards(hole_card_str.to_string());
+    println!("Hand: {:?}", hole_cards);
 }
 
