@@ -181,6 +181,21 @@ fn main() {
       },
     }
 
+    // Turn
+    match matches.value_of("turn") {
+      None => (),
+      Some(turn_card_str) => {
+        if turn_card_str.len() != 2
+        {
+          println!("Error: one turn card is required");
+          return ();
+        } else {
+          let mut turn_card = string_to_cards(turn_card_str.to_string()).unwrap();
+          board_cards.append(&mut turn_card);
+        }
+      },
+    }
+
     println!("Board: {:?}", board_cards);
 
 }
