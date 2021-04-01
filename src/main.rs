@@ -196,6 +196,21 @@ fn main() {
       },
     }
 
+    // River
+    match matches.value_of("river") {
+      None => (),
+      Some(river_card_str) => {
+        if river_card_str.len() != 2
+        {
+          println!("Error: one river card is required");
+          return ();
+        } else {
+          let mut river_card = string_to_cards(river_card_str.to_string()).unwrap();
+          board_cards.append(&mut river_card);
+        }
+      },
+    }
+
     println!("Board: {:?}", board_cards);
 
 }
