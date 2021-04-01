@@ -152,6 +152,7 @@ fn main() {
                          .required(false)
                          .index(4))
                      .get_matches();
+    // Hole
     let hole_card_str = matches.value_of("hole_cards").unwrap();
     println!("Hand: {}", hole_card_str);
     if hole_card_str.len() != 8
@@ -161,5 +162,26 @@ fn main() {
     }
     let hole_cards = string_to_cards(hole_card_str.to_string()).unwrap();
     println!("Hand: {:?}", hole_cards);
+
+    let mut board_cards : Vec<Card> = Vec::new();
+
+    // Flop
+    match matches.value_of("flop") {
+      None => (),
+      Some(flop_card_str) => {
+        if flop_card_str.len() != 6
+        {
+          println!("Error: three flop cards are required");
+          return ();
+        } else {
+          let mut flop_cards = string_to_cards(flop_card_str.to_string()).unwrap();
+          // After appending flop_cards to board_cards, flop_cards is no longer usable
+          board_cards.append(&mut flop_cards);
+        }
+      },
+    }
+
+    println!("Board: {:?}", board_cards);
+
 }
 
