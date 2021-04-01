@@ -110,15 +110,15 @@ struct OmahaHand {
 }
 
 
-fn string_to_cards(s: String) -> Vec<Card> {
+fn string_to_cards(s: String) -> Result<Vec<Card>, strum::ParseError> {
     let mut cards: Vec<Card> = Vec::new();
     for chunk in &s.chars().chunks(2)
     {
         let vec = chunk.collect::<Vec<char>>();
         /* ['A', 'd] */
         //println!("{:?}", vec);
-        let r = Rank::from_str(&String::from(vec[0])).unwrap();
-        let s = Suit::from_str(&String::from(vec[1])).unwrap();
+        let r = Rank::from_str(&String::from(vec[0])).expect("Invalid rank");
+        let s = Suit::from_str(&String::from(vec[1])).expect("Invalid suit");
         let card = Card::new(r, s);
         /* Card { rank: Ace, suit: Diamond } */
         //println!("{:?}", card);
@@ -127,7 +127,7 @@ fn string_to_cards(s: String) -> Vec<Card> {
         cards.push(card);
     }
 
-    cards
+    Ok(cards)
 }
 
 
@@ -154,7 +154,7 @@ fn main() {
                      .get_matches();
     let hole_card_str = matches.value_of("hole_cards").unwrap();
     println!("Hand: {}", hole_card_str);
-    let hole_cards = string_to_cards(hole_card_str.to_string());
+    let hole_cards = string_to_cards(hole_card_str.to_string()).unwrap();
     println!("Hand: {:?}", hole_cards);
 }
 
