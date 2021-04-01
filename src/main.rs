@@ -154,6 +154,11 @@ fn main() {
                      .get_matches();
     let hole_card_str = matches.value_of("hole_cards").unwrap();
     println!("Hand: {}", hole_card_str);
+    if hole_card_str.len() != 8
+    {
+      println!("Error: four hole cards are required");
+      return ();
+    }
     let hole_cards = string_to_cards(hole_card_str.to_string()).unwrap();
     println!("Hand: {:?}", hole_cards);
 }
