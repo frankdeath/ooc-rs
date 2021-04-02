@@ -154,14 +154,14 @@ fn main() {
                      .get_matches();
     // Hole
     let hole_card_str = matches.value_of("hole_cards").unwrap();
-    println!("Hand: {}", hole_card_str);
+    //println!("Hand: {}", hole_card_str);
     if hole_card_str.len() != 8
     {
       println!("Error: four hole cards are required");
       return ();
     }
     let hole_cards = string_to_cards(hole_card_str.to_string()).unwrap();
-    println!("Hand: {:?}", hole_cards);
+    //println!("Hand: {:?}", hole_cards);
 
     let mut board_cards : Vec<Card> = Vec::new();
 
@@ -211,7 +211,13 @@ fn main() {
       },
     }
 
-    println!("Board: {:?}", board_cards);
+    //println!("Board: {:?}", board_cards);
 
+    let oh = OmahaHand {
+        hole_cards: hole_cards,
+        board_cards: board_cards,
+    };
+
+    println!("{:?}", oh);
 }
 
